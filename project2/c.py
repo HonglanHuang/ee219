@@ -21,6 +21,7 @@ def plot(decomposition, tfidf, r):
 if __name__ == "__main__":
     question_4_a = True
     question_4_b = True 
+    print_result = False 
 
     r_lsi = 2
     r_nmf = 2
@@ -33,8 +34,9 @@ if __name__ == "__main__":
         first.set_title('truncated svd')
         truncated, colors = plot(b.get_truncated_svd, tfidf, r_lsi)
         km = a.k_means_cluster(truncated)
-        result = a.get_result(km, labels)
-        a.print_result(result)
+        if print_result:
+            result = a.get_result(km, labels)
+            a.print_result(result)
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
 
         # using nmf 
@@ -49,8 +51,9 @@ if __name__ == "__main__":
         truncated = b.get_nmf(tfidf, r_lsi) 
         truncated = preprocessing.scale(truncated, with_mean = False)
         km = a.k_means_cluster(truncated)
-        result = a.get_result(km, labels)
-        a.print_result(result)
+        if print_result:
+            result = a.get_result(km, labels)
+            a.print_result(result)
         colors = map(lambda(x): 'r' if x == 0 else 'b', km.labels_)
         first = pl.subplot(233)
         first.set_title('normalize festures')
@@ -60,8 +63,9 @@ if __name__ == "__main__":
         non_linear = b.get_nmf(tfidf, r_nmf) 
         non_linear = FunctionTransformer(np.log1p).transform(non_linear)
         km = a.k_means_cluster(non_linear)
-        result = a.get_result(km, labels)
-        a.print_result(result)
+        if print_result:
+            result = a.get_result(km, labels)
+            a.print_result(result)
         colors = map(lambda(x): 'r' if x == 0 else 'b', km.labels_)
         first = pl.subplot(234)
         first.set_title('non-linear')
@@ -72,8 +76,9 @@ if __name__ == "__main__":
         truncated = preprocessing.scale(truncated, with_mean = False)
         b_3_first = FunctionTransformer(np.log1p).transform(truncated)
         km = a.k_means_cluster(b_3_first)
-        result = a.get_result(km, labels)
-        a.print_result(result)
+        if print_result:
+            result = a.get_result(km, labels)
+            a.print_result(result)
         colors = map(lambda(x): 'r' if x == 0 else 'b', km.labels_)
         first = pl.subplot(235)
         first.set_title('normalize first and then non-linear')
@@ -83,8 +88,9 @@ if __name__ == "__main__":
         b_3_second = preprocessing.scale(non_linear)
         km = a.k_means_cluster(b_3_second)
         km = a.k_means_cluster(non_linear)
-        result = a.get_result(km, labels)
-        a.print_result(result)
+        if print_result:
+            result = a.get_result(km, labels)
+            a.print_result(result)
         colors = map(lambda(x): 'r' if x == 0 else 'b', km.labels_)
         first = pl.subplot(236)
         first.set_title('non-linear first and then normalize')
