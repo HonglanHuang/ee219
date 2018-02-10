@@ -87,7 +87,6 @@ if __name__ == "__main__":
         # using non_linear fist and then normalize
         b_3_second = preprocessing.scale(non_linear)
         km = a.k_means_cluster(b_3_second)
-        km = a.k_means_cluster(non_linear)
         if print_result:
             result = a.get_result(km, labels)
             a.print_result(result)

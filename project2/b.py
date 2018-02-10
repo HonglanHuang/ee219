@@ -52,7 +52,6 @@ def reduce_plot(U, s, V, reduction_type, tfidf, k = 2):
     rand_list = []
     mutual_list = []
     for rank in r:
-        print 1 
         # get the reducted U, s, V
 #        r_U = U[:, 0:rank] 
 #        r_s = s[0:rank]
