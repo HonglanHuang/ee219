@@ -10,7 +10,7 @@ from sklearn.cluster import KMeans
 
 categories = ['comp.graphics', 'comp.os.ms-windows.misc', 'comp.sys.ibm.pc.hardware', 'comp.sys.mac.hardware', 'rec.autos', 'rec.motorcycles', 'rec.sport.baseball', 'rec.sport.hockey']
 
-def retrieve_data():
+def retrieve_data(categories = categories):
     dataset = fetch_20newsgroups(subset = 'train', shuffle = True, random_state = 42, categories = categories)
     return dataset
 
