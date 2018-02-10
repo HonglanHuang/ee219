@@ -39,7 +39,9 @@ def get_truncated_svd(tfidf, rank):
     return svd.fit_transform(tfidf)
 
 # use LSI to do the reduction
-def use_LSI(U, s, V, tfidf):
+# u, s, v are not in use
+# reduction_type is a function to determine which reduction method is used,get_truncated_svd or get_nmf
+def reduce_plot(U, s, V, reduction_type, tfidf, k = 2):
     U = np.array(U) 
     V = np.array(V) 
     s = np.array(s) 
@@ -50,12 +52,13 @@ def use_LSI(U, s, V, tfidf):
     rand_list = []
     mutual_list = []
     for rank in r:
+        print 1 
         # get the reducted U, s, V
 #        r_U = U[:, 0:rank] 
 #        r_s = s[0:rank]
 #        x = r_U.dot(np.diag(r_s))
-        x = get_truncated_svd(tfidf, rank) 
-        km = a.k_means_cluster(x) 
+        x = reduction_type(tfidf, rank) 
+        km = a.k_means_cluster(x, k) 
         result = a.get_result(km, labels)
         homo_list.append(result[0])
         complete_list.append(result[1])
@@ -75,4 +78,5 @@ if __name__ == "__main__":
     data = a.retrieve_data()
     tfidf = a.get_TFIDF(data)
     U, s, V = get_svd(tfidf)
-    use_LSI(U, s, V, tfidf)
+   # reduce_plot(U, s, V, get_truncated_svd, tfidf)
+    reduce_plot(U, s, V, get_nmf, tfidf)

@@ -22,8 +22,7 @@ def get_TFIDF(data):
     tfidf = vectorizer.fit_transform(contents)
     return tfidf
 
-def k_means_cluster(tfidf):
-    k = 2
+def k_means_cluster(tfidf, k = 2):
     km = KMeans(n_clusters = k, n_init = 100, max_iter = 1000)
     km.fit(tfidf)
     return km
