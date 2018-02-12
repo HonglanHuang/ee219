@@ -62,20 +62,32 @@ if __name__ == "__main__":
     if question_5_a:
         # get the 20-color clusters 
         # using truncated svd
-        aa = pl.subplot(231)
+        aa = pl.subplot(331)
         aa.set_title("truncated svd")
         truncated, colors = plot(b.get_truncated_svd, tfidf, r_lsi)
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
 
         # using nmf
-        aa = pl.subplot(232)
+        aa = pl.subplot(332)
         aa.set_title("nmf")
         truncated, colors = plot(b.get_nmf, tfidf, r_nmf)
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
 
     # what function should we use to reduce dimension
     if question_5_b:
-        # normalizing features
+        # normalizing features after truncated svd 
+        truncated = b.get_truncated_svd(tfidf, r_nmf) 
+        truncated = preprocessing.scale(truncated, with_mean = False)
+        km = a.k_means_cluster(truncated, k)
+        if print_result:
+            result = a.get_result(km, labels)
+            a.print_result(result)
+        colors = map(lambda(x): all_colors[x], km.labels_)
+        first = pl.subplot(333)
+        first.set_title('normalize festures using truncated svd')
+        pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
+
+        # normalizing features after nmf
         truncated = b.get_nmf(tfidf, r_nmf) 
         truncated = preprocessing.scale(truncated, with_mean = False)
         km = a.k_means_cluster(truncated, k)
@@ -83,8 +95,8 @@ if __name__ == "__main__":
             result = a.get_result(km, labels)
             a.print_result(result)
         colors = map(lambda(x): all_colors[x], km.labels_)
-        first = pl.subplot(233)
-        first.set_title('normalize festures')
+        first = pl.subplot(334)
+        first.set_title('normalize festures using nmf')
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
     
         # using non-linear transformation
@@ -95,7 +107,7 @@ if __name__ == "__main__":
             result = a.get_result(km, labels)
             a.print_result(result)
         colors = map(lambda(x): all_colors[x], km.labels_)
-        first = pl.subplot(234)
+        first = pl.subplot(335)
         first.set_title('non-linear')
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
 
@@ -108,7 +120,7 @@ if __name__ == "__main__":
             result = a.get_result(km, labels)
             a.print_result(result)
         colors = map(lambda(x): all_colors[x], km.labels_)
-        first = pl.subplot(235)
+        first = pl.subplot(336)
         first.set_title('normalize first and then non-linear')
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
 
@@ -119,7 +131,7 @@ if __name__ == "__main__":
             result = a.get_result(km, labels)
             a.print_result(result)
         colors = map(lambda(x): all_colors[x], km.labels_)
-        first = pl.subplot(236)
+        first = pl.subplot(337)
         first.set_title('non-linear first and then normalize')
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
 

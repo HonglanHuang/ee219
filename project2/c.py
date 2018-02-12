@@ -21,7 +21,7 @@ def plot(decomposition, tfidf, r):
 if __name__ == "__main__":
     question_4_a = True
     question_4_b = True 
-    print_result = False 
+    print_result = False
 
     r_lsi = 2
     r_nmf = 2
@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     if question_4_a:
         # using truncated svd
-        first = pl.subplot(231)
+        first = pl.subplot(331)
         first.set_title('truncated svd')
         truncated, colors = plot(b.get_truncated_svd, tfidf, r_lsi)
         km = a.k_means_cluster(truncated)
@@ -40,14 +40,26 @@ if __name__ == "__main__":
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
 
         # using nmf 
-        second = pl.subplot(232)
+        second = pl.subplot(332)
         second.set_title('nmf')
         truncated, colors = plot(b.get_nmf, tfidf, r_lsi)
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
 
     # what function should we use to reduce dimension
     if question_4_b:
-        # normalizing features
+        # normalizing features after truncated svd
+        truncated = b.get_truncated_svd(tfidf, r_lsi) 
+        truncated = preprocessing.scale(truncated, with_mean = False)
+        km = a.k_means_cluster(truncated)
+        if print_result:
+            result = a.get_result(km, labels)
+            a.print_result(result)
+        colors = map(lambda(x): 'r' if x == 0 else 'b', km.labels_)
+        first = pl.subplot(333)
+        first.set_title('normalize truncated svd festures')
+        pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
+
+        # normalizing features after nmf 
         truncated = b.get_nmf(tfidf, r_lsi) 
         truncated = preprocessing.scale(truncated, with_mean = False)
         km = a.k_means_cluster(truncated)
@@ -55,8 +67,8 @@ if __name__ == "__main__":
             result = a.get_result(km, labels)
             a.print_result(result)
         colors = map(lambda(x): 'r' if x == 0 else 'b', km.labels_)
-        first = pl.subplot(233)
-        first.set_title('normalize festures')
+        first = pl.subplot(334)
+        first.set_title('normalize nmf festures')
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
     
         # using non-linear transformation
@@ -67,7 +79,7 @@ if __name__ == "__main__":
             result = a.get_result(km, labels)
             a.print_result(result)
         colors = map(lambda(x): 'r' if x == 0 else 'b', km.labels_)
-        first = pl.subplot(234)
+        first = pl.subplot(335)
         first.set_title('non-linear')
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
 
@@ -80,7 +92,7 @@ if __name__ == "__main__":
             result = a.get_result(km, labels)
             a.print_result(result)
         colors = map(lambda(x): 'r' if x == 0 else 'b', km.labels_)
-        first = pl.subplot(235)
+        first = pl.subplot(336)
         first.set_title('normalize first and then non-linear')
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
 
@@ -91,7 +103,7 @@ if __name__ == "__main__":
             result = a.get_result(km, labels)
             a.print_result(result)
         colors = map(lambda(x): 'r' if x == 0 else 'b', km.labels_)
-        first = pl.subplot(236)
+        first = pl.subplot(337)
         first.set_title('non-linear first and then normalize')
         pl.scatter(truncated[:, 0:1], truncated[:, 1:2], c = colors)
 
