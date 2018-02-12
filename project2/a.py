@@ -43,7 +43,7 @@ def print_result(result):
     print("Completeness: %0.3f" % result[1]) 
     print("V-measure: %0.3f" % result[2])
     print("Adjusted rand score: %0.3f" % result[3])
-    print("Adjusted mutual info score: %0.3f" % result[4])
+    print("Adjusted mutual info score: %0.3f\n" % result[4])
 
 if __name__ == "__main__":
     dataset = retrieve_data()
